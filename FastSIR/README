@@ -1,0 +1,22 @@
+To run in Atom: 
+(I am not using Revise.jl)
+
+Starting in FastSIR_main.jl: 
+
+Execute entire file. 
+
+Hierarchy is flat, all files in the same directory. 
+Files: 
+
+FastSIR_common.jl: common methods across FastSIR implementations
+FastSIR_graphs.jl: list of include statements
+FastSIR_no_nodes_impl.jl: FastSIR with the Node Datastructure. 
+     Contained in module FastSIRNoNodes. 
+FastSIR_with_nodes_impl.jl: FastSIR with node structure replaced by collection of arrays
+     Contained in module FastSIRWithNodes. 
+FastSir_main.jl: includes FastSIR_graphs.jl, sets up the Graph and runs two simulations
+
+Notes: 
+I was expecting the array-based implementation to have far less allocations, but that was not 
+the case. 
+
