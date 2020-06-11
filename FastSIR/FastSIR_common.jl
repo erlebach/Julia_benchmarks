@@ -7,7 +7,7 @@ function makeGraph(nb_nodes, edges_per_vertex)
 end
 
 function myPlot(times, S, I, R)
-   plotot(times, S, label=:S)
+   plot(times,  S, label=:S)
    plot!(times, I, label=:I)
    plot!(times, R, label=:R)
 end
