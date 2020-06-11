@@ -14,7 +14,7 @@ using LightGraphs
 # each call to processTransSIR: 0.000007 sec, 11 alloc, 210 bytes. WHY?
 
 # t_max is mandatory parameter
-const G = F.erdos_renyi(100000, 0.0012)
+const G = F.erdos_renyi(1000, 0.0012)
 # Compute the maximum degree
 @time max_degree = Δ(G)  # no allocations
 @time neigh_list = zeros(Int, max_degree)
@@ -25,10 +25,11 @@ println(adj[2])
 println("Graph: $(nv(G)) nodes, $(ne(G)) edges")
 
 # ρ: fraction initially infected
-const params = (τ=.3, γ=1.0, t_max=5., ρ=0.05)
+const params1 = (τ=.3f0, γ=1.0f0, t_max=5.f0, ρ=0.05f0)
 
-const infected = rand(1:nv(G), Int(floor(nv(G)*params.ρ)))
-println("Initial number of infected: $(length(infected)),  percentage infected: $(params.ρ)")
+const infected = rand(Int32(1):Int32(nv(G)), Int32(nv(G)*params1.ρ))
+println("Initial number of infected: $(length(infected)),  percentage infected: $(params1.ρ)")
+println("infected: $(typeof(infected))")
 
 # Higher τ means higher infection rate, so infection should grow faster. It does not.
 # Higher τ means smaller time increments (smaller increment to infection, so infections should rise faster)
@@ -38,14 +39,21 @@ println("Initial number of infected: $(length(infected)),  percentage infected: 
 # 16 to 25 percent decrease in time
 
 for i in 1:1
-	global times, S, I, Rkjjj
+	global times, S, I, R
 	global timesn, Sn, In, Rn
 	# with Node struct
+	# G(100000) and 6M edges
 
+	# 64 bit
 	# 6.942529 seconds (16.88 M allocations: 934.965 MiB, 8.75% gc time)
 	# 6.421051 seconds (16.85 M allocations: 934.356 MiB, 7.72% gc time)
 	# 6.197951 seconds (15.46 M allocations: 848.826 MiB, 8.24% gc time)
-	@time times, S, I, R = FW.simulate(G, params, infected)
+
+	# 32 bit  (not worth the effort. I did not cut down on time)
+	# 6.215658 seconds (15.46 M allocations: 755.526 MiB, 3.18% gc time)
+	# 5.770145 seconds (15.50 M allocations: 756.243 MiB, 11.51% gc time)
+	# 5.411210 seconds (15.46 M allocations: 755.494 MiB, 7.35% gc time)
+	@time times, S, I, R = FW.simulate(G, params1, infected)
 	# without Node struct
 	#@time timesn, Sn, In, Rn = FN.simulate(G, params, infected)
 end
