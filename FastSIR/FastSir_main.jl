@@ -38,8 +38,8 @@ println("Initial number of infected: $(length(infected)),  percentage infected: 
 # 16 to 25 percent decrease in time
 
 for i in 1:1
-	global time, S, I, R
-	global timen, Sn, In, Rn
+	global times, S, I, R
+	global timesn, Sn, In, Rn
 	# with Node struct
 	@time times, S, I, R = FW.simulate(G, params, infected)
 	# without Node struct

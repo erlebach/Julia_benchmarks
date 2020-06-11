@@ -37,6 +37,16 @@ mutable struct Event
 	time::Float64
     action::Symbol # :recover, :transmit
 end
+mutable struct Event1
+    index::Int  # graph node index
+	time::Float64
+    action::Symbol # :recover, :transmit
+    action2::Symbol # :recover, :transmit
+end
+
+mutable struct Event4
+	index::Int
+end
 
 function fastSIR(G, params, initial_infecteds::Vector{Int})
 	τ = params.τ
@@ -110,7 +120,7 @@ end;
 
 function testTimings(G, node_u)
 	println("\nEnter testTimings")
-	a = []
+	a = Array{Int,1}()
 	# 115 alloc
 	for ν in neighbors(G, node_u.index)
 		push!(a, ν)

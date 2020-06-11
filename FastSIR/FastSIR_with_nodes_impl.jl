@@ -36,7 +36,7 @@ function fastSIR(G, params, initial_infecteds::Vector{Int})
 	t_max = params.t_max  # mandatory
 
     nb_nodes = nv(G)
-    times = [0.]
+	times = [0.]
     # length(G) is Int128
     S = [nb_nodes]
     I = [0]
