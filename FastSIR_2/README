@@ -1,0 +1,39 @@
+FastSIR_1, 2020-06-11
+
+To run in Atom: 
+(I am not using Revise.jl)
+
+Starting in FastSIR_main.jl: 
+
+Execute entire file. 
+
+Hierarchy is flat, all files in the same directory. 
+Files: 
+
+FastSIR_common.jl: common methods across FastSIR implementations
+FastSIR_graphs.jl: list of include statements
+FastSIR_no_nodes_impl.jl: FastSIR with the Node Datastructure. 
+     Contained in module FastSIRNoNodes. 
+FastSIR_with_nodes_impl.jl: FastSIR with node structure replaced by collection of arrays
+     Contained in module FastSIRWithNodes. 
+FastSir_main.jl: includes FastSIR_graphs.jl, sets up the Graph and runs two simulations
+
+Notes: 
+I was expecting the array-based implementation to have far less allocations, but that was not 
+the case. 
+
+----------------------------------------------------------------------
+Continue to optimze the version with nodes, which is easier to understand. 
+Reduce the size of the nodes using Int32, Float32 where appropriate. Replace 
+symbols with Int8 (value 1, 2, 3 up to 7). Symbols are 8 bytes, so inefficient. 
+
+After converting to Int32 and Float32, and Symbols to Int8, the simulation time 
+did not change, except that gc was reduced to half its previous value. 
+That would almost mean that the dominant time was not spent with memory allocation. 
+
+I also converted [] to Int32[] for more efficiency. 
+----------------------------------------------------------------------
+New Folder: FastSIR_2/ (current directory)
+Experiment with Weighted Graphs. 
+The non-weighted version runs 3-4 times faster than Python FastSIR
+----------------------------------------------------------------------
