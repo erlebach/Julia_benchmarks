@@ -1,3 +1,5 @@
+# Takes way too long!! Do not know why.
+
 module FastSIRNoNodes
 
 using LightGraphs
@@ -48,7 +50,7 @@ mutable struct Event4
 	index::Int
 end
 
-function fastSIR(G, params, initial_infecteds::Vector{Int})
+function fastSIR(G, params, initial_infecteds::Vector{T}) where {T <: Number}
 	τ = params.τ
 	γ = params.γ
 	expo_γ = Exponential(γ) # type Distribution::Exp
@@ -130,9 +132,9 @@ function testTimings(G, node_u)
 end
 
 #function processTransSIR(G, node_u, t::Float64, τ::Float64, γ::Float64,
-function processTransSIR(G, u, rec_time, status, pred_inf_time, t::Float64, τ::Float64, γ::Float64,
+function processTransSIR(G, u, rec_time, status, pred_inf_time, t::Float64, τ::Float32, γ::Float32,
         times::Vector{Float64}, S::Vector{Int}, I::Vector{Int}, R::Vector{Int},
-		Q, t_max::Float64, expo_τ, expo_γ)
+		Q, t_max::Float32, expo_τ, expo_γ)
 		#Q, t_max::Float64, nodes::Vector{Node}, expo_τ, expo_γ)
     if (S[end] <= 0)
 		println("S=$(S[end]), (ERROR!!! S cannot be zero at this point")

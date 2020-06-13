@@ -10,11 +10,11 @@ using LightGraphs
 # The cost of fastSIR in Jlia is 8.8 sec, 400,000 iterations, and 740M memory allocs
 # So create a smaller graph and debug
 
-# const G = F.erdos_renyi(50000, 0.0002)
+const G = F.erdos_renyi(100000, 0.0012)
 # each call to processTransSIR: 0.000007 sec, 11 alloc, 210 bytes. WHY?
 
 # t_max is mandatory parameter
-const G = F.erdos_renyi(1000, 0.0012)
+#const G = F.erdos_renyi(1000, 0.0012)
 # Compute the maximum degree
 @time max_degree = Δ(G)  # no allocations
 @time neigh_list = zeros(Int, max_degree)
@@ -38,6 +38,8 @@ println("infected: $(typeof(infected))")
 # 5.7 sec with fast_SIR
 # 16 to 25 percent decrease in time
 
+nothing
+
 for i in 1:1
 	global times, S, I, R
 	global timesn, Sn, In, Rn
@@ -55,7 +57,8 @@ for i in 1:1
 	# 5.411210 seconds (15.46 M allocations: 755.494 MiB, 7.35% gc time)
 	@time times, S, I, R = FW.simulate(G, params1, infected)
 	# without Node struct
-	#@time timesn, Sn, In, Rn = FN.simulate(G, params, infected)
+	# 21 sec
+	@time timesn, Sn, In, Rn = FN.simulate(G, params1, convert(Vector{Int32},infected)) #21 sec
 end
 F.myPlot(times, S, I, R)
 F.myPlot(timesn, Sn, In, Rn)

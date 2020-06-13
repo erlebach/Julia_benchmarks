@@ -37,3 +37,7 @@ New Folder: FastSIR_2/ (current directory)
 Experiment with Weighted Graphs. 
 The non-weighted version runs 3-4 times faster than Python FastSIR
 ----------------------------------------------------------------------
+
+With nodes: should run in 6 sec but takes 30 sec. 
+So compare regular graphs and weighted graphs. 
+----------------------------------------------------------------------

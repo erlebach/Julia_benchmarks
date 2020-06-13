@@ -158,7 +158,7 @@ end
 function simulate(G, params, infected)
 	#global γ, τ
 	times, S, I, R = fastSIR(G, params, infected)
-    println("Simulate: end, with nodes")
+    println("Simulate: end, with nodes, FastSIR_2/")
 	return times, S, I, R
 end
 

@@ -16,7 +16,7 @@ using SimpleWeightedGraphs
 # each call to processTransSIR: 0.000007 sec, 11 alloc, 210 bytes. WHY?
 
 # t_max is mandatory parameter. There are actually 2x edges reported (both directions)
-const G = F.erdos_renyi(100000, 0.006)
+const G = F.erdos_renyi(100000, 0.0012)
 const GW = SimpleWeightedGraph(G)
 # Compute the maximum degree
 @time max_degree = Δ(G)  # no allocations
@@ -25,14 +25,11 @@ const GW = SimpleWeightedGraph(G)
 println(adj[2])
 
 
-println("Graph G: $(nv(G)) nodes, $(ne(G)) edges")
-println("Graph GW: $(nv(G)) nodes, $(ne(G)) edges")
 
 # ρ: fraction initially infected
 const params = (τ=.3, γ=1.0, t_max=5., ρ=0.05)
 
 const infected = rand(1:nv(G), Int(floor(nv(G)*params.ρ)))
-println("Initial number of infected: $(length(infected)),  percentage infected: $(params.ρ)")
 
 # Higher τ means higher infection rate, so infection should grow faster. It does not.
 # Higher τ means smaller time increments (smaller increment to infection, so infections should rise faster)
@@ -47,12 +44,16 @@ for i in 1:1
 	global timesw, Sw, Iw, Rw
 	# with Node struct
 
+    println("Graph G: $(nv(G)) nodes, $(ne(G)) edges")
+    println("Graph GW: $(nv(G)) nodes, $(ne(G)) edges")
+    println("Initial number of infected: $(length(infected)),  percentage infected: $(params.ρ)")
+
 	# 6.942529 seconds (16.88 M allocations: 934.965 MiB, 8.75% gc time)
 	# 6.421051 seconds (16.85 M allocations: 934.356 MiB, 7.72% gc time)
 	# 6.197951 seconds (15.46 M allocations: 848.826 MiB, 8.24% gc time)
-	#@time times, S, I, R = FW.simulate(G, params, infected)
+	@time times, S, I, R = FW.simulate(G, params, infected)
 
-	@time timesw, Sw, Iw, Rw = FWG.simulate(GW, params, infected)
+	#@time timesw, Sw, Iw, Rw = FWG.simulate(GW, params, infected)
 	# without Node struct
 	#@time timesn, Sn, In, Rn = FN.simulate(G, params, infected)
 end
